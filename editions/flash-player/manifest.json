@@ -1,0 +1,7 @@
+{
+  "name": "SabrinaFlash",
+  "sha256": {
+    "build/SabrinaFlash.ino.bin": "7d555ec8b89a18dec338cfb461a564b2772a4eb74082225e7ef00b5c22b53b57",
+    "video.bin": "678a421a9025817bae55b3b288db699a200b9ff04dbffd8a31246cd67dccb73e"
+  }
+}
