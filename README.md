@@ -80,10 +80,10 @@ MJPEG clip -> JPEGDEC -> Arduino_GFX -> round screen
 ```text
 editions/     Both sketches and matching flash packages
 media/        Original clip + two MJPEG exports
- demo/        Real-device recording
- docs/        Wiring images + SD detective story
- diagnostics/ SD investigation sketch and serial checker
- tools/       Flash-source and video-image generator
+demo/        Real-device recording
+docs/        Wiring images + SD detective story
+diagnostics/ SD investigation sketch and serial checker
+tools/       Flash-source and video-image generator
 ```
 
 The diagnostic helper defaults to the original COM10 setup. Adjust it for your machine. Historical diagnosis notes mention local backups and logs that stay outside this repository.
