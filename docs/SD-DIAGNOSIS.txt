@@ -1,0 +1,39 @@
+SD investigation, 2026-11-14, COM10
+
+SD initialization remains unresolved. The board now runs the flash-only player
+from flash-player/SabrinaFlash/SabrinaFlash.ino, as authorized by the user.
+It reads the video from onboard flash without using the SD interface.
+Upload hashes verified; two live loops completed at 12.9 fps (299 and 298 frames
+shown, 163 and 164 skipped to preserve the target 20 fps timeline).
+See flash-player/playback.log and flash-player/README.txt.
+The diagnostic build is retained in build-source/SabrinaLoop/SabrinaLoop.ino.
+The packaged app.bin, manifest.json and root SabrinaLoop.ino remain the original
+matching release. Flash.cmd therefore restores the original application.
+
+Confirmed on hardware:
+- PC card was FAT32, approximately 16 GB. video.mjpeg matched the project SHA256.
+- Card was moved to the board, and USB power was fully cycled by the user.
+- Socket detect GPIO41 reads 0 (inserted).
+- CMD8 returns 0x000001AA successfully.
+- CMD55 returns a valid application-command response.
+- ACMD41 with argument 0x40FF8000 repeatedly returns OCR 0x00FF8000.
+  The ready bit (0x80000000) remains clear.
+- Explicit 1-bit SDMMC, card detect bypassed, 400/1000/10000/20000 kHz
+  operating-clock limits do not resolve initialization.
+- An extra 12-second ACMD41 readiness wait still returns OCR 0x00FF8000.
+- Therefore failure occurs before FAT mounting or opening the video.
+  It is not evidence of a missing video file or bad FAT formatting.
+
+The card communicates but does not become ready in this board. Card compatibility,
+card condition, and board power/socket issues have not yet been distinguished.
+The second (empty) card also timed out, including with the display off during
+initialization. Socket detect read 0, but CMD8/CMD55 did not return valid replies.
+The user reports both cards work in other devices. Board socket/contact/power
+issues are therefore leading suspects, but the specific hardware fault is unproven.
+No SD card was reformatted. The original onboard ffat partition was backed up
+to backup-before-sd-fix/device-ffat-before-video.bin before writing the video.
+
+Original files: backup-before-sd-fix.
+Latest live trace: sd-live-check.log.
+Read-only verification command:
+C:\Users\Admin\.espressif\python_env\idf6.0_py3.13_env\Scripts\python.exe check_sd.py 25
