@@ -2,7 +2,9 @@
 
 A tiny round screen. An ESP32. A looping Sabrina clip. An entirely reasonable use of a weekend.
 
-![The wiring adventure](docs/sd-wiring.png)
+![Sabrina playing on the actual round-screen gadget](demo/device-preview.png)
+
+*A frame from my device recording. Yes, this is the whole point.*
 
 **[Watch the actual little thing in action ?](demo/Recording.mp4)**
 
@@ -69,6 +71,19 @@ Open the matching `.ino` in Arduino IDE.
 `python tools/build_flash_player.py` regenerates the flash sketch and video image from the original SD source and `media/video.mjpeg`. It does **not** compile firmware. After compiling, update the flash manifest hashes before using its checksum-checked uploader.
 
 ## The extremely serious architecture
+
+```mermaid
+flowchart LR
+    Flash[Onboard flash: video.bin] --> Read[MJPEG frame reader]
+    SD[FAT32 SD: original edition] --> Read
+    Read --> Decode[JPEGDEC + PSRAM buffers]
+    Decode --> GFX[Arduino_GFX / QSPI]
+    GFX --> Screen[Round CO5300 display]
+    Clock[Playback clock] --> Read
+```
+
+Each edition selects one storage path. Frame skipping keeps playback on its timeline. The original SD path still has the documented hardware issue.
+
 
 ```text
 MJPEG clip -> JPEGDEC -> Arduino_GFX -> round screen
